@@ -7,14 +7,19 @@ import snakeBuilder.Board;
 
 public class Food {
 
-	private int x;
-	private int y;
+	// hide default creation
+	private Food(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	private int x; // x position
+	private int y; // y position
 
 	// encapsulate food position
 	public int getX() {
 		return x;
 	}
-	
 	public int getY() {
 		return y;
 	}
@@ -22,32 +27,30 @@ public class Food {
 	// food represent as 'x'
 	public final char icon = 'x';
 
-	private Food(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
+	// create and generate food instance in a valid position
 	public static Food generate(LinkedList<int[]> snakeBody) {
 
 		Random rand = new Random();
 		var validPosition = false;
-		var x = 0;
-		var y = 0;
-
-		// HEIGHT = 8;
-		// WIDTH = 15;
+		var x = -1;
+		var y = -1;
 
 		do {
-			x = rand.nextInt(Board.WIDTH - 2) + 1;
-			y = rand.nextInt(Board.HEIGHT - 2) + 1;
-			
+			/* generate in a valid position inside border based:
+			 * WIDTH = 15, boundary: 0 & 14;
+			 * HEIGHT = 8, boundary: 0 & 7;
+			 */
+			x = rand.nextInt(Board.WIDTH - 2) + 1; // expected position 1 - 13;
+			y = rand.nextInt(Board.HEIGHT - 2) + 1; // expected position 1 - 6;
+
+			// avoid the position of snake
 			for (int[] snake : snakeBody) {
 				if (!(x != snake[0] && y != snake[1])) {
 					validPosition = true;
 					break;
 				}
 			}
-			
+
 		} while (!validPosition);
 		return new Food(x, y);
 	}
