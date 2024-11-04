@@ -40,17 +40,14 @@ public class Food {
 		do {
 			x = rand.nextInt(Board.WIDTH - 2) + 1;
 			y = rand.nextInt(Board.HEIGHT - 2) + 1;
-
+			
 			for (int[] snake : snakeBody) {
-				if (!(x == snake[0] && y == snake[1])) {
+				if (!(x != snake[0] && y != snake[1])) {
 					validPosition = true;
+					break;
 				}
 			}
 			
-//			if (snakeBody.getLast()[0] == x && snakeBody.getLast()[1] == y) {
-//				validPosition = false;
-//			}
-
 		} while (!validPosition);
 		return new Food(x, y);
 	}
