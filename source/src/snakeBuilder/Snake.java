@@ -8,15 +8,17 @@ import snakeInterface.State;
 
 public class Snake implements Controller, State {
 
-	public LinkedList<int[]> body = new LinkedList<>();
-
-	public Food sFood;
+	private LinkedList<int[]> body = new LinkedList<>();
+	private Food food;
+	
+	public LinkedList<int[]> getBody() { return body; }
+	public Food getFood() { return food; }
 
 	public Snake() {
 		this.x = Board.WIDTH / 2;
 		this.y = Board.HEIGHT / 2;
-		this.body.addFirst(new int[] {x, y});
-		sFood = Food.generate(this.body);
+		this.getBody().addFirst(new int[] {x, y}); 
+		food = Food.generate(this.getBody());
 	}
 
 	public int x, y;
@@ -33,23 +35,23 @@ public class Snake implements Controller, State {
 	@Override
 	public boolean hasCollided() {
 
-		int snakeHead[] = {this.body.getFirst()[0], this.body.getFirst()[1]};
+		int snakeHead[] = {getBody().getFirst()[0], getBody().getFirst()[1]};
 
-		for (int each = 1; each < this.body.size(); each++) {
-			if (snakeHead[0] == this.body.get(each)[0] && snakeHead[1] == this.body.get(each)[1]) {
+		for (int each = 1; each < getBody().size(); each++) {
+			if (snakeHead[0] == getBody().get(each)[0] && snakeHead[1] == getBody().get(each)[1]) {
 				return true;
 			}
 		}
 
-		if (this.body.getFirst()[0] == 0 || this.body.getFirst()[0] == Board.WIDTH - 1) return true;
-		if (this.body.getFirst()[1] == 0 || this.body.getFirst()[1] == Board.HEIGHT - 1) return true;
+		if (getBody().getFirst()[0] == 0 || getBody().getFirst()[0] == Board.WIDTH - 1) return true;
+		if (getBody().getFirst()[1] == 0 || getBody().getFirst()[1] == Board.HEIGHT - 1) return true;
 		return false;
 	}
 
 	@Override
 	public boolean hasEatenFood() {
 
-		if (this.body.getFirst()[0] == this.sFood.getX() && this.body.getFirst()[1] == this.sFood.getY()) {
+		if (getBody().getFirst()[0] == getFood().getX() && getBody().getFirst()[1] == getFood().getY()) {
 			return true;
 		}
 		return false;
@@ -57,33 +59,33 @@ public class Snake implements Controller, State {
 
 	@Override
 	public void up() {
-		y--; // index 1 is Y axis
-		this.body.addFirst(new int[] {x, y});
+		y--;
+		this.getBody().addFirst(new int[] {x, y});
 	}
 
 	@Override
 	public void down() {
-		y++; // index 1 is Y axis
-		this.body.addFirst(new int[] {x, y});
+		y++;
+		this.getBody().addFirst(new int[] {x, y});
 	}
 
 	@Override
 	public void left() {
-		x--; // index 0 is X axis
-		this.body.addFirst(new int[] {x, y});
+		x--;
+		this.getBody().addFirst(new int[] {x, y});
 	}
 
 	@Override
 	public void right() {
-		x++; // index 0 is X axis
-		this.body.addFirst(new int[] {x, y});
+		x++;
+		this.getBody().addFirst(new int[] {x, y});
 	}
 	
 	@Override
 	public void checkPosition() {
 		
-		if (hasEatenFood()) sFood = Food.generate(this.body);
-		else this.body.removeLast(); 
+		if (hasEatenFood()) food = Food.generate(this.getBody());
+		else this.getBody().removeLast(); 
 		
 		if (hasCollided()) gameOver = true;
 	}

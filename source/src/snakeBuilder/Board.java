@@ -1,12 +1,22 @@
 package snakeBuilder;
 
 public class Board {
-
-	public final static int HEIGHT = 8;
-	public final static int WIDTH = 15;
+	
+	public static final int HEIGHT = 8;
+	public static final int WIDTH = 15;
 
 	public final char border = '#';
 	public final char cell = ' ';
+
+	private Board(Snake s) {
+		this.snake = s;
+	}
+	
+	public static Board of(Snake s) {
+		return new Board(s);
+	}
+	
+	private Snake snake;
 
 	private StringBuilder v = new StringBuilder();
 
@@ -18,23 +28,25 @@ public class Board {
 				if (borderHeight == 0 || borderHeight == HEIGHT - 1) v.append(border); // draw border up and side
 				else if (borderWidth == 0 || borderWidth == WIDTH - 1) v.append(border); // draw border left and right
 				else {
-					
-					var isSnakeBody = false;
+
 					var isSnakeHead = false;
-					var isSnakeFood = snake.sFood.getX() == borderWidth && snake.sFood.getY() == borderHeight;
-							
-					if (snake.body.getFirst()[0] == borderWidth && snake.body.getFirst()[1] == borderHeight) isSnakeHead = true;
-					
-					for (int i = 1; i < snake.body.size(); i++) {
-						if (snake.body.get(i)[0] == borderWidth && snake.body.get(i)[1] == borderHeight) isSnakeBody = true;
+					var isSnakeBody = false;
+					var isSnakeFood = snake.getFood().getX() == borderWidth && snake.getFood().getY() == borderHeight;
+
+					if (snake.getBody().getFirst()[0] == borderWidth && snake.getBody().getFirst()[1] == borderHeight) {
+						isSnakeHead = true;
 					}
-					
+
+					for (int i = 1; i < snake.getBody().size(); i++) {
+						if (snake.getBody().get(i)[0] == borderWidth && snake.getBody().get(i)[1] == borderHeight) {
+							isSnakeBody = true;
+						}
+					}
+
 					if (isSnakeHead) v.append(snake.sHead);
 					else if (isSnakeBody) v.append(snake.sBody);
-					else if (isSnakeFood) v.append(snake.sFood.icon);
+					else if (isSnakeFood) v.append(snake.getFood().icon);
 					else v.append(cell);
-
-					
 				}
 			}
 			v.append('\n');
@@ -45,13 +57,4 @@ public class Board {
 		boardBuilder();
 		System.out.println(v.toString());
 	}
-
-	public static Board of(Snake s) {
-		return new Board(s);
-	}
-
-	private Snake snake;
-
-	private Board(Snake s) {this.snake = s;};
-
 }
