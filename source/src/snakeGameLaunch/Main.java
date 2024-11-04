@@ -6,19 +6,20 @@ import snakeBuilder.Board;
 import snakeBuilder.Snake;
 
 public class Main {
-	
-	private enum Command { W, S, A, D; }
-	
-	public static Command input(String label) {
-		
+
+	// command to use
+	private enum Control { W, S, A, D; }
+
+	// return a valid Control value with exception handling
+	public static Control input(String label) {
 		@SuppressWarnings("resource")
 		Scanner read = new Scanner(System.in);
 		var valid = false;
-		
+
 		do {		
 			try {
 				System.out.print(label);
-				return Command.valueOf(read.nextLine().toUpperCase());
+				return Control.valueOf(read.nextLine().toUpperCase());
 			} catch (IllegalArgumentException e) {
 				System.out.println("Invalid command\n");
 			}
@@ -27,23 +28,26 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		
-		Snake snakeObj = new Snake();
-		Board board = Board.of(snakeObj);
-		
-		while (snakeObj.isAlive()) {
-		
-			Command c = input("MOVE: ");
-			
+
+		// a snake object
+		Snake snake = new Snake();
+		// a board object with a parameter of snake object to track the position
+		Board board = Board.of(snake);
+		board.show(); // show the board
+
+		while (snake.isAlive()) {
+
+			Control c = input("MOVE: "); // prompt a user input to move the snake
+
 			switch (c) {
-			case Command.A -> snakeObj.left();
-			case Command.W -> snakeObj.up();
-			case Command.S -> snakeObj.down();
-			case Command.D -> snakeObj.right();	
+			case Control.W -> snake.up();
+			case Control.S -> snake.down();
+			case Control.A -> snake.left();
+			case Control.D -> snake.right();	
 			}
-			
-			snakeObj.checkPosition();
-			board.show();
+
+			snake.checkPosition(); // check the state of snake every move
+			board.show(); // show the board
 		}
 	}
 }
