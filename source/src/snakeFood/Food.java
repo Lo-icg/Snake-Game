@@ -31,7 +31,7 @@ public class Food {
 	public static Food generate(LinkedList<int[]> snakeBody) {
 
 		Random rand = new Random();
-		var validPosition = false;
+		boolean validPosition;
 		var x = -1;
 		var y = -1;
 
@@ -42,11 +42,12 @@ public class Food {
 			 */
 			x = rand.nextInt(Board.WIDTH - 2) + 1; // expected position 1 - 13;
 			y = rand.nextInt(Board.HEIGHT - 2) + 1; // expected position 1 - 6;
-
+			validPosition = true;
+				
 			// avoid the position of snake
 			for (int[] snake : snakeBody) {
-				if (!(x != snake[0] && y != snake[1])) {
-					validPosition = true;
+				if ((snake[0] == x && snake[1] == y)) {
+					validPosition = false;
 					break;
 				}
 			}
