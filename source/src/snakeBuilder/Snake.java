@@ -10,10 +10,12 @@ public class Snake implements Controller, State {
 
 	private LinkedList<int[]> body = new LinkedList<>(); // snake body including the head
 	private Food food; // food of snake
-	
+	private int score = 1;
+
 	// encapsulate fields
 	public LinkedList<int[]> getBody() { return body; }
 	public Food getFood() { return food; }
+	public int getScore() { return score; }
 
 	public Snake() {
 		this.x = Board.WIDTH / 2; // default position x
@@ -24,7 +26,7 @@ public class Snake implements Controller, State {
 
 	public int x, y;
 
-	public final char sHead = 'O'; // snake head figure
+	public final char sHead = '@'; // snake head figure
 	public final char sBody = 'o'; // snake body figure
 	private boolean gameOver;
 
@@ -48,7 +50,7 @@ public class Snake implements Controller, State {
 		// check if collided on board
 		if (getBody().getFirst()[0] == 0 || getBody().getFirst()[0] == Board.WIDTH - 1) return true;
 		if (getBody().getFirst()[1] == 0 || getBody().getFirst()[1] == Board.HEIGHT - 1) return true;
-		
+
 		return false; // return false otherwise
 	}
 
@@ -88,10 +90,14 @@ public class Snake implements Controller, State {
 	// check the state of snake
 	@Override
 	public void checkPosition() {
-		
-		if (hasEatenFood()) food = Food.generate(this.getBody()); // generate another position of food
-		else this.getBody().removeLast(); // remove last body of snake if not eaten the food
-		
+
+		if (hasEatenFood()) {
+			score++;
+			food = Food.generate(this.getBody()); // generate another position of food
+		} else this.getBody().removeLast(); // remove last body of snake if not eaten the food
+
+		// game over
 		if (hasCollided()) gameOver = true;
+
 	}
 }

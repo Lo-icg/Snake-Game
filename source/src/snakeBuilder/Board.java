@@ -55,6 +55,12 @@ public class Board {
 					else if (isSnakeFood) v.append(snake.getFood().icon); // draw food
 					else v.append(cell); // draw cell inside border
 				}
+				
+				// display score on board side
+				if (borderHeight == 0 && borderWidth == WIDTH - 1) v.append(" Score: " + snake.getScore());
+				// display game over on board side if snake was collided
+				if (borderHeight == 1 && borderWidth == WIDTH - 1) if (!snake.isAlive()) v.append(" Game over");
+				
 			}
 			v.append('\n'); // new line
 		}
